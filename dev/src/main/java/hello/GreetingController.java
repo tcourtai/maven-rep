@@ -15,8 +15,15 @@ public class GreetingController {
 	
 	@RequestMapping("/")
 	public String index(Model model){
-		model.addAttribute("message", "Hello !");
+		model.addAttribute("gizmo", new Gizmo());
 		return "hello";
+	}
+	
+	@RequestMapping("/save")
+	public String save(Gizmo gizmo) {
+	    System.out.println(gizmo.getField1());
+	    System.out.println(gizmo.getField2());
+	    return "redirect:/";
 	}
 	
 	@RequestMapping("/greeting")
