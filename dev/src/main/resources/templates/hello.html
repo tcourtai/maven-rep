@@ -5,14 +5,15 @@
     <title>HELLO</title>
 </head>
 <body>
+<p th:text="${message}"></p>
 <form id="gizmo-form" role="form" th:action="@{/save}" method="post" th:object="${gizmo}">
     <div>
-        <label for="field1">Field 1</label>
-        <input type="text" id="field1" name="field1" th:field="${gizmo.field1}"/>
+        <label for="departure">Departure</label>
+        <input type="text" id="departure" name="departure" th:field="${gizmo.departure}"/>
     </div>
     <div>
-        <label for="field2">Field 2</label>
-        <input type="text" id="field2" name="field2" th:field="${gizmo.field2}"/>
+        <label for="arrival">Arrival</label>
+        <input type="text" id="arrival" name="arrival" th:field="${gizmo.arrival}"/>
     </div>
     <div>
         <button type="submit">Save</button>
