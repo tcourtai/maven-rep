@@ -29,7 +29,9 @@ public class Gizmo {
 
     private String from;
     private String to;
+    private String date;
     private Flights lstFlight = new Flights();
+    private final String slash = "%2F";
     
 	
     public String getFrom() {
@@ -44,6 +46,23 @@ public class Gizmo {
 	public void setTo(String to) {
 		this.to = to;
 	}
+	
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+	
+	public String getDateToHtml() {
+		System.out.println(date);
+		return date.split("-")[1]
+				+ slash
+				+ date.split("-")[2]
+				+ slash
+				+ date.split("-")[0];
+	}
+	
 	
 	public boolean start() {
 		System.out.println("lets go!");
@@ -61,7 +80,7 @@ public class Gizmo {
 						  .header("accept-language", "fr,en-US;q=0.8,en;q=0.6")
 						  .header("cache-control", "no-cache")
 						  .header("postman-token", "33364678-ae74-1ba4-f6db-ed50b04510eb")
-						  .body("ADT=1&CHD=0&INF=0&awardFSNumber=&birthdates=03%2F02%2F2016&bookingType=F&departDate=03%2F17%2F2016&departDateDisplay=03%2F17%2F2016&from="+ from + "&promoCode=&returnDate=03%2F16%2F2016&returnDateDisplay=03%2F16%2F2016&to=" + to + "&tripType=oneWay")
+						  .body("ADT=1&CHD=0&INF=0&awardFSNumber=&birthdates=03%2F02%2F2016&bookingType=F&departDate="+ this.getDateToHtml() +"&departDateDisplay="+ this.getDateToHtml() +"&from="+ from + "&promoCode=&returnDate=03%2F16%2F2016&returnDateDisplay=03%2F16%2F2016&to=" + to + "&tripType=oneWay")
 						  .asString();
 		
 					
@@ -89,7 +108,7 @@ public class Gizmo {
    
 	public boolean parseResult(String html){
 		
-		String date = "";
+		String fligthDate = "";
 		
 		/*
 		String html = "";
@@ -105,7 +124,7 @@ public class Gizmo {
 
 		//from	= doc.select("tr.departureInfo1").first().text();
 		//to		= doc.select("tr.arrivalInfo1").first().text();
-		date	= doc.select("div.date").first().text();
+		fligthDate	= doc.select("div.date").first().text();
 				
 		Element tbody = doc.select("tbody.sortThisTable").first();
 		Elements flights = tbody.select("tr.rowsMarket1");
@@ -122,7 +141,7 @@ public class Gizmo {
 
 			f.setFrom(from);
 			f.setTo(to);
-			f.setDate(date);
+			f.setDate(fligthDate);
 			
 			lstFlight.add(f);
 			System.out.println(f.toString());
@@ -143,4 +162,5 @@ public class Gizmo {
 		return lstFlight.toHtml();
 		
 	}
+
 }
