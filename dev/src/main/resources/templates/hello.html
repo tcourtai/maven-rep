@@ -17,8 +17,12 @@
     </div>
 	
     <div>
-        <label for="date">Date</label>
-        <input type="date" id="date" name="date" th:field="${gizmo.date}"/>
+        <label for="depDate">Departure Date </label>
+        <input type="Date" id="depDate" name="depDate" th:field="${gizmo.depDate}"/>
+    </div>
+    <div>
+        <label for="retDate">Return Date </label>
+        <input type="Date" id="retDate" name="retDate" th:field="${gizmo.retDate}"/>
     </div>
     <div>
         <button type="submit">Save</button>

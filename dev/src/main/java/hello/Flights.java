@@ -1,6 +1,7 @@
 package hello;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Flights {
@@ -12,6 +13,14 @@ public class Flights {
 	
 	public void add(Flight f) {
 		list.add(f);
+	}	
+	
+	public void add(Collection<? extends Flight> fs) {
+		list.addAll(fs);
+	}
+	
+	public ArrayList<Flight> getList() {
+		return list;
 	}
 	
 	public String toHtml() {

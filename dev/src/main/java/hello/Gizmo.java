@@ -29,11 +29,10 @@ public class Gizmo {
 
     private String from;
     private String to;
-    private String date;
+    private String depDate;
+    private String retDate;
     private Flights lstFlight = new Flights();
-    private final String slash = "%2F";
-    
-	
+
     public String getFrom() {
 		return from;
 	}
@@ -47,109 +46,31 @@ public class Gizmo {
 		this.to = to;
 	}
 	
-	public String getDate() {
-		return date;
+	public String getDepDate() {
+		return depDate;
 	}
-	public void setDate(String date) {
-		this.date = date;
-	}
-	
-	public String getDateToHtml() {
-		System.out.println(date);
-		return date.split("-")[1]
-				+ slash
-				+ date.split("-")[2]
-				+ slash
-				+ date.split("-")[0];
+	public void setDepDate(String date) {
+		this.depDate = date;
 	}
 	
+	public String getRetDate() {
+		return retDate;
+	}
+	public void setRetDate(String date) {
+		this.retDate = date;
+	}
 	
 	public boolean start() {
 		System.out.println("lets go!");
-
-			HttpResponse<String> response;
-			try {
-				response = Unirest.post("https://www.spirit.com/Default.aspx?action=search")
-						  .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-						  .header("origin", "https//www.spirit.com")
-						  .header("upgrade-insecure-requests", "1")
-						  .header("user-agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36")
-						  .header("content-type", "application/x-www-form-urlencoded")
-						  .header("referer", "https//www.spirit.com/Default.aspx")
-						  .header("accept-encoding", "gzip, deflate")
-						  .header("accept-language", "fr,en-US;q=0.8,en;q=0.6")
-						  .header("cache-control", "no-cache")
-						  .header("postman-token", "33364678-ae74-1ba4-f6db-ed50b04510eb")
-						  .body("ADT=1&CHD=0&INF=0&awardFSNumber=&birthdates=03%2F02%2F2016&bookingType=F&departDate="+ this.getDateToHtml() +"&departDateDisplay="+ this.getDateToHtml() +"&from="+ from + "&promoCode=&returnDate=03%2F16%2F2016&returnDateDisplay=03%2F16%2F2016&to=" + to + "&tripType=oneWay")
-						  .asString();
-		
-					
-				response = Unirest.get("https://www.spirit.com/DPPCalendarMarket.aspx").asString();
-				System.out.println(response.getBody().toString());
-				parseResult(response.getBody().toString());
-				
-				try(  PrintWriter out = new PrintWriter( "C:\\Users\\tcour\\Documents\\filename.txt" )  ){
-	            out.println( response.getBody().toString());
-				} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	
-				
-			} catch (UnirestException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-					
-		
+		FlightInfo fi = new FlightInfo(from, to, depDate);
+		ExtractorSpirit eSpirit = new ExtractorSpirit(fi);
+		eSpirit.start();		
+		lstFlight.add(eSpirit.getFlights().getList());
 		System.out.println("finished");
 		return true;
 	}
    
-	public boolean parseResult(String html){
-		
-		String fligthDate = "";
-		
-		/*
-		String html = "";
-		try {
-			html = readFile("C:\\Users\\tcour\\Documents\\filename.txt", Charset.defaultCharset());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
-		
-		Document doc = Jsoup.parse(html);
-
-		//from	= doc.select("tr.departureInfo1").first().text();
-		//to		= doc.select("tr.arrivalInfo1").first().text();
-		fligthDate	= doc.select("div.date").first().text();
-				
-		Element tbody = doc.select("tbody.sortThisTable").first();
-		Elements flights = tbody.select("tr.rowsMarket1");
-
-		for (Element flight : flights){
-			Flight f = new Flight();
-
-			String dep = flight.select("td.depart").first().text();
-			f.setDeparture(dep.substring(18, dep.length()));
-			String arr = flight.select("td.arrive").first().text();
-			f.setArrival(arr.substring(18, arr.length()));			
-			
-			f.setPrice(flight.select("em.emPrice").first().text());
-
-			f.setFrom(from);
-			f.setTo(to);
-			f.setDate(fligthDate);
-			
-			lstFlight.add(f);
-			System.out.println(f.toString());
-			
-		}
-		   		
-		return true;
-	}
+	
 	
 	static String readFile(String path, Charset encoding) 
 			  throws IOException 
