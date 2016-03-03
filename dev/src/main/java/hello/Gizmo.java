@@ -27,21 +27,22 @@ import com.mashape.unirest.request.GetRequest;
 
 public class Gizmo {
 
-    private String departure;
-    private String arrival;
+    private String from;
+    private String to;
+    private Flights lstFlight = new Flights();
     
 	
-    public String getDeparture() {
-		return departure;
+    public String getFrom() {
+		return from;
 	}
-	public void setDeparture(String departure) {
-		this.departure = departure;
+	public void setFrom(String from) {
+		this.from = from;
 	}
-	public String getArrival() {
-		return arrival;
+	public String getTo() {
+		return to;
 	}
-	public void setArrival(String arrival) {
-		this.arrival = arrival;
+	public void setTo(String to) {
+		this.to = to;
 	}
 	
 	public boolean start() {
@@ -88,8 +89,9 @@ public class Gizmo {
 	}
    
 	public boolean parseResult(){
-		
 		String html = "";
+		String date = "";
+		
 		try {
 			html = readFile("C:\\Users\\tcour\\Documents\\filename.txt", Charset.defaultCharset());
 		} catch (IOException e) {
@@ -98,18 +100,33 @@ public class Gizmo {
 		}
 		
 		Document doc = Jsoup.parse(html);
-		
+
+		//from	= doc.select("tr.departureInfo1").first().text();
+		//to		= doc.select("tr.arrivalInfo1").first().text();
+		date	= doc.select("div.date").first().text();
+				
 		Element tbody = doc.select("tbody.sortThisTable").first();
 		Elements flights = tbody.select("tr.rowsMarket1");
-		int i = 0;
+
 		for (Element flight : flights){
-			i++;
-			System.out.println("Flight " + i);
-			System.out.println(flight.select("td.depart"));
-			System.out.println(flight.select("em.emPrice").first().text());
+			Flight f = new Flight();
+
+			String dep = flight.select("td.depart").first().text();
+			f.setDeparture(dep.substring(18, dep.length()));
+			String arr = flight.select("td.arrive").first().text();
+			f.setArrival(arr.substring(18, arr.length()));			
+			
+			f.setPrice(flight.select("em.emPrice").first().text());
+
+			f.setFrom(from);
+			f.setTo(to);
+			f.setDate(date);
+			
+			lstFlight.add(f);
+			System.out.println(f.toString());
+			
 		}
-			               
-    		
+		   		
 		return true;
 	}
 	
@@ -119,4 +136,9 @@ public class Gizmo {
 			  byte[] encoded = Files.readAllBytes(Paths.get(path));
 			  return new String(encoded, encoding);
 			}
+	
+	public String toHtml() {
+		return lstFlight.toHtml();
+		
+	}
 }

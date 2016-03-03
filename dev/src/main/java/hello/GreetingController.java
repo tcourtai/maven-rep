@@ -16,13 +16,14 @@ public class GreetingController {
         model.addAttribute("gizmo", gizmo);
                 
         gizmo.parseResult();
+        model.addAttribute("message", gizmo.toHtml());
         return "hello";
     }
 
     @RequestMapping("/save")
     public String save(Gizmo gizmo) {
-        System.out.println(gizmo.getDeparture());
-        System.out.println(gizmo.getArrival());
+        System.out.println(gizmo.getFrom());
+        System.out.println(gizmo.getTo());
         gizmo.start();
         
         return "redirect:/";
