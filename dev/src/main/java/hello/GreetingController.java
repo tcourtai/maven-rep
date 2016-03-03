@@ -14,7 +14,8 @@ public class GreetingController {
     public String index(Model model) {
         Gizmo gizmo = new Gizmo();
         model.addAttribute("gizmo", gizmo);
-        gizmo.start();
+                
+        gizmo.parseResult();
         return "hello";
     }
 
@@ -22,7 +23,8 @@ public class GreetingController {
     public String save(Gizmo gizmo) {
         System.out.println(gizmo.getDeparture());
         System.out.println(gizmo.getArrival());
-			gizmo.start();
+        gizmo.start();
+        
         return "redirect:/";
     }
 }

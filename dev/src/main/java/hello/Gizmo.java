@@ -6,10 +6,17 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
@@ -22,6 +29,7 @@ public class Gizmo {
 
     private String departure;
     private String arrival;
+    
 	
     public String getDeparture() {
 		return departure;
@@ -57,6 +65,9 @@ public class Gizmo {
 		
 					
 				response = Unirest.get("https://www.spirit.com/DPPCalendarMarket.aspx").asString();
+
+
+				//parseResult(response.getBody().toString());
 				
 				try(  PrintWriter out = new PrintWriter( "C:\\Users\\tcour\\Documents\\filename.txt" )  ){
 	            out.println( response.getBody().toString());
@@ -76,4 +87,36 @@ public class Gizmo {
 		return true;
 	}
    
+	public boolean parseResult(){
+		
+		String html = "";
+		try {
+			html = readFile("C:\\Users\\tcour\\Documents\\filename.txt", Charset.defaultCharset());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Document doc = Jsoup.parse(html);
+		
+		Element tbody = doc.select("tbody.sortThisTable").first();
+		Elements flights = tbody.select("tr.rowsMarket1");
+		int i = 0;
+		for (Element flight : flights){
+			i++;
+			System.out.println("Flight " + i);
+			System.out.println(flight.select("td.depart"));
+			System.out.println(flight.select("em.emPrice").first().text());
+		}
+			               
+    		
+		return true;
+	}
+	
+	static String readFile(String path, Charset encoding) 
+			  throws IOException 
+			{
+			  byte[] encoded = Files.readAllBytes(Paths.get(path));
+			  return new String(encoded, encoding);
+			}
 }
