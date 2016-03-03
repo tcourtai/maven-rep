@@ -15,7 +15,6 @@ public class Extractor {
 	}
 	
 	public String getDateToHtml(String d) {
-		System.out.println(d);
 		return d.split("-")[1]
 				+ slash
 				+ d.split("-")[2]

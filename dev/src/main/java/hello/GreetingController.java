@@ -12,8 +12,8 @@ public class GreetingController {
 
     @RequestMapping("/")
     public String index(Model model) {
-        Gizmo gizmo = new Gizmo();
-        model.addAttribute("gizmo", gizmo);
+        PriceAnalyzer priceAnalyzer = new PriceAnalyzer();
+        model.addAttribute("PriceAnalyzer", priceAnalyzer);
                 
         //gizmo.parseResult();
         //model.addAttribute("message", gizmo.toHtml());
@@ -21,12 +21,12 @@ public class GreetingController {
     }
 
     @RequestMapping("/save")
-    public String save(Gizmo gizmo, Model model) {
-        System.out.println(gizmo.getFrom());
-        System.out.println(gizmo.getTo());
-        gizmo.start();
-        model.addAttribute("message", gizmo.toHtml());
-        return "hello";
+    public String save(PriceAnalyzer pa, Model model) {
+        System.out.println(pa.getFrom());
+        System.out.println(pa.getTo());
+        pa.start();
+        model.addAttribute("message", pa.toHtml());
+        return "result";
         //return "redirect:/";
     }
 }

@@ -6,23 +6,23 @@
 </head>
 <body>
 
-<form id="gizmo-form" role="form" th:action="@{/save}" method="post" th:object="${gizmo}">
+<form id="PriceAnalyzer-form" role="form" th:action="@{/save}" method="post" th:object="${PriceAnalyzer}">
     <div>
         <label for="departure">From</label>
-        <input type="text" id="from" name="from" th:field="${gizmo.from}"/>
+        <input type="text" id="from" name="from" th:field="${PriceAnalyzer.from}"/>
     </div>
     <div>
         <label for="arrival">To</label>
-        <input type="text" id="to" name="to" th:field="${gizmo.to}"/>
+        <input type="text" id="to" name="to" th:field="${PriceAnalyzer.to}"/>
     </div>
 	
     <div>
         <label for="depDate">Departure Date </label>
-        <input type="Date" id="depDate" name="depDate" th:field="${gizmo.depDate}"/>
+        <input type="Date" id="depDate" name="depDate" th:field="${PriceAnalyzer.depDate}"/>
     </div>
     <div>
         <label for="retDate">Return Date </label>
-        <input type="Date" id="retDate" name="retDate" th:field="${gizmo.retDate}"/>
+        <input type="Date" id="retDate" name="retDate" th:field="${PriceAnalyzer.retDate}"/>
     </div>
     <div>
         <button type="submit">Save</button>
