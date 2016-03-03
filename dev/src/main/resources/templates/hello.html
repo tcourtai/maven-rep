@@ -8,12 +8,12 @@
 
 <form id="gizmo-form" role="form" th:action="@{/save}" method="post" th:object="${gizmo}">
     <div>
-        <label for="departure">Departure</label>
-        <input type="text" id="departure" name="departure" th:field="${gizmo.departure}"/>
+        <label for="departure">From</label>
+        <input type="text" id="from" name="from" th:field="${gizmo.from}"/>
     </div>
     <div>
-        <label for="arrival">Arrival</label>
-        <input type="text" id="arrival" name="arrival" th:field="${gizmo.arrival}"/>
+        <label for="arrival">To</label>
+        <input type="text" id="to" name="to" th:field="${gizmo.to}"/>
     </div>
     <div>
         <button type="submit">Save</button>

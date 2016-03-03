@@ -15,17 +15,18 @@ public class GreetingController {
         Gizmo gizmo = new Gizmo();
         model.addAttribute("gizmo", gizmo);
                 
-        gizmo.parseResult();
-        model.addAttribute("message", gizmo.toHtml());
+        //gizmo.parseResult();
+        //model.addAttribute("message", gizmo.toHtml());
         return "hello";
     }
 
     @RequestMapping("/save")
-    public String save(Gizmo gizmo) {
+    public String save(Gizmo gizmo, Model model) {
         System.out.println(gizmo.getFrom());
         System.out.println(gizmo.getTo());
         gizmo.start();
-        
-        return "redirect:/";
+        model.addAttribute("message", gizmo.toHtml());
+        return "hello";
+        //return "redirect:/";
     }
 }

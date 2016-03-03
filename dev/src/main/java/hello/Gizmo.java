@@ -61,14 +61,13 @@ public class Gizmo {
 						  .header("accept-language", "fr,en-US;q=0.8,en;q=0.6")
 						  .header("cache-control", "no-cache")
 						  .header("postman-token", "33364678-ae74-1ba4-f6db-ed50b04510eb")
-						  .body("ADT=1&CHD=0&INF=0&awardFSNumber=&birthdates=03%2F02%2F2016&bookingType=F&departDate=03%2F17%2F2016&departDateDisplay=03%2F17%2F2016&from=DFW&promoCode=&returnDate=03%2F16%2F2016&returnDateDisplay=03%2F16%2F2016&to=LGA&tripType=oneWay")
+						  .body("ADT=1&CHD=0&INF=0&awardFSNumber=&birthdates=03%2F02%2F2016&bookingType=F&departDate=03%2F17%2F2016&departDateDisplay=03%2F17%2F2016&from="+ from + "&promoCode=&returnDate=03%2F16%2F2016&returnDateDisplay=03%2F16%2F2016&to=" + to + "&tripType=oneWay")
 						  .asString();
 		
 					
 				response = Unirest.get("https://www.spirit.com/DPPCalendarMarket.aspx").asString();
-
-
-				//parseResult(response.getBody().toString());
+				System.out.println(response.getBody().toString());
+				parseResult(response.getBody().toString());
 				
 				try(  PrintWriter out = new PrintWriter( "C:\\Users\\tcour\\Documents\\filename.txt" )  ){
 	            out.println( response.getBody().toString());
@@ -88,16 +87,19 @@ public class Gizmo {
 		return true;
 	}
    
-	public boolean parseResult(){
-		String html = "";
+	public boolean parseResult(String html){
+		
 		String date = "";
 		
+		/*
+		String html = "";
 		try {
 			html = readFile("C:\\Users\\tcour\\Documents\\filename.txt", Charset.defaultCharset());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 		
 		Document doc = Jsoup.parse(html);
 
