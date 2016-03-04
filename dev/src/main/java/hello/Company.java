@@ -1,5 +1,6 @@
 package hello;
 
 public enum Company {
-	SPIRIT
+	SPIRIT,
+	UNITED
 }

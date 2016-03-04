@@ -39,7 +39,6 @@ public class ExtractorSpirit extends Extractor {
 					  .header("accept-encoding", "gzip, deflate")
 					  .header("accept-language", "fr,en-US;q=0.8,en;q=0.6")
 					  .header("cache-control", "no-cache")
-					  .header("postman-token", "33364678-ae74-1ba4-f6db-ed50b04510eb")
 					  .body("ADT=1&CHD=0&INF=0&awardFSNumber=&birthdates=03%2F02%2F2016&bookingType=F&departDate="+ getDateToHtml(flightInfo.getDate()) +"&departDateDisplay="+ getDateToHtml(flightInfo.getDate()) +"&from="+ flightInfo.getFrom() + "&promoCode=&returnDate=03%2F16%2F2016&returnDateDisplay=03%2F16%2F2016&to=" + flightInfo.getTo() + "&tripType=oneWay")
 					  .asString();
 	
@@ -57,23 +56,12 @@ public class ExtractorSpirit extends Extractor {
 	
 public boolean parse(){
 		
-		String fligthDate = "";
-		
-		/*
-		String html = "";
-		try {
-			html = readFile("C:\\Users\\tcour\\Documents\\filename.txt", Charset.defaultCharset());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
-		
+	
 		Document doc = Jsoup.parse(html);
 
 		//from	= doc.select("tr.departureInfo1").first().text();
 		//to		= doc.select("tr.arrivalInfo1").first().text();
-		fligthDate	= doc.select("div.date").first().text();
+		//fligthDate	= doc.select("div.date").first().text();
 				
 		Element tbody = doc.select("tbody.sortThisTable").first();
 		Elements lstflights = tbody.select("tr.rowsMarket1");
@@ -90,7 +78,7 @@ public boolean parse(){
 
 			f.setFrom(doc.select("tr.departureInfo1").first().text());
 			f.setTo(doc.select("tr.arrivalInfo1").first().text());
-			f.setDate(fligthDate);
+			f.setDate(flightInfo.getDate());
 			
 			f.setCompany(Company.SPIRIT);
 			f.setFlightType(flightInfo.getFlightType());
