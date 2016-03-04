@@ -48,7 +48,8 @@ public class ExtractorUnited extends Extractor {
 					  .header("content-type", "application/x-www-form-urlencoded; charset=UTF-8")
 					  .header("accept-encoding", "gzip, deflate")
 					  .header("accept-language", "fr,en-US;q=0.8,en;q=0.6")
-					  .body("Cabin=Coach&DepartDate=Thu.%2C+Mar.+24%2C+2016&DepartTime=0000&FromCode=DFW&NonstopOnly=true&NumberOfAdults=1&SearchBy=P&SearchType=OW&ToCode=NYC&From=Dallas%2FFort+Worth%2C+TX+(DFW)&To=New+York+City%2C+NY+(NYC+-+All+Airports)")
+					  .body("Cabin=Coach&DepartDate=" + flightInfo.getDate() + "&DepartTime=0000&FromCode=DFW&NonstopOnly=true&NumberOfAdults=1&SearchBy=P&SearchType=OW&ToCode=CHI&From=Dallas%2FFort+Worth%2C+TX+(DFW)&To=Chicago, IL, US (CHI - All Airports)")
+					  //.body("Cabin=Coach&DepartDate=2016-03-12&DepartTime=0000&FromCode=DFW&NonstopOnly=true&NumberOfAdults=1&SearchBy=P&SearchType=OW&ToCode=NYC")
 					  .asString();
 	
 				
@@ -87,8 +88,7 @@ public class ExtractorUnited extends Extractor {
 		public boolean parse(){
 		
 		Document doc = Jsoup.parse(html);
-
-				
+	
 		Elements lstflights = doc.select("ul[data-role]");
 
 		for (Element flight : lstflights){
@@ -96,7 +96,8 @@ public class ExtractorUnited extends Extractor {
 			
 			Elements eDetails = flight.select("div.grid_7");
 			
-
+			if (eDetails.size() == 0) break;
+			
 			String details = eDetails.get(0).html();
 			
 			String[] detailsTab = details.split(">");
@@ -112,11 +113,20 @@ public class ExtractorUnited extends Extractor {
 			f.setArrival(detailsTab[1].replaceAll("</span", ""));
 			f.setTo(detailsTab[4]);			
 			
+			Element ePrice = flight.select("input#btnPickTrip").first();
+						
+			Pattern p = Pattern.compile("([$]\\d+)");
+			Matcher m = p.matcher(ePrice.attr("value"));
+
+			while (m.find()) {
+				f.setPrice(m.group(1));
+			}
+			
 			f.setDate(flightInfo.getDate());
 			
 			f.setCompany(Company.UNITED);
 			f.setFlightType(flightInfo.getFlightType());
-			System.out.println(f.toString());
+			//System.out.println(f.toString());
 			flights.add(f);
 			//System.out.println(f.toString());
 			

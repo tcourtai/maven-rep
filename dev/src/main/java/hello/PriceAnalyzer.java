@@ -71,6 +71,11 @@ public class PriceAnalyzer {
 			ExtractorSpirit eSpirit = new ExtractorSpirit(fi);
 			eSpirit.start();		
 			lstFlight.add(eSpirit.getFlights().getList());
+			
+			ExtractorUnited eUnited = new ExtractorUnited(fi);
+			eUnited.start();		
+			lstFlight.add(eUnited.getFlights().getList());		
+			
 		}
 		System.out.println("finished");	
 		//System.out.println(lstFlight.getList().toString());
@@ -100,7 +105,7 @@ public class PriceAnalyzer {
 			if  (depDate != null) {
 			Date depDateToDate = formatter.parse(depDate);
 			//lstDepDate.add(formatter.format(depDateToDate));
-			for (int i = 0; i < 15; i++) {
+			for (int i = 0; i < 3; i++) {
 				lstDepDate.add(formatter.format(DateUtil.addDays(depDateToDate, i)));
 			}
 			}
