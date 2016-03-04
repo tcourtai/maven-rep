@@ -56,8 +56,17 @@ public class Flights {
 			sb.append("\n");
 		}
 		return sb.toString();
-	}
+	}	
 	
+	public List<String> toCSV() {
+		List<String> txtToCSV = new ArrayList<String>();
+		txtToCSV.add("From;To;Date;Departure;Arrival;Price;Company;FlightType");
+		for (Flight f : list) {
+			txtToCSV.add(f.toCSV());
+		}		
+		return txtToCSV;
+		
+	}
 	public String toHtml() {
 		
 		StringBuilder sb = new StringBuilder();

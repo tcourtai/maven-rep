@@ -77,6 +77,23 @@ public class Flight extends FlightInfo {
 		+ " \nCompany : " + this.getCompany();
 	}
 
+	public String toCSV() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(addItemToCSV(this.getFrom()));
+		sb.append(addItemToCSV(this.getTo()));
+		sb.append(addItemToCSV(this.getDate()));
+		sb.append(addItemToCSV(this.getDeparture()));
+		sb.append(addItemToCSV(this.getArrival()));
+		sb.append(addItemToCSV(this.getPrice()));
+		sb.append(addItemToCSV(this.getCompany().toString()));
+		sb.append(addItemToCSV(this.getFlightType().toString()));
+		
+		return sb.toString(); 
+	}
+	
+	public String addItemToCSV(String item) {
+		return item + FileUtil.csvSeparator;
+	}
 
 	public float parsePrice(String p) {
 		float fp = Float.MAX_VALUE;
