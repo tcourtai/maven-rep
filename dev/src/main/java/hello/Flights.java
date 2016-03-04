@@ -23,6 +23,41 @@ public class Flights {
 		return list;
 	}
 	
+	public Flight getBestFlightByFlightType(FlightType ft) {
+		Flight bestFlight = new Flight();
+		bestFlight.setPriceNum(Float.MAX_VALUE);
+		
+		for (Flight f : list) {
+			if (f.getPriceNum() < bestFlight.getPriceNum() && f.getFlightType() == ft) {
+				bestFlight = (Flight) f.clone();
+			}
+			
+		}
+		if (bestFlight.getPriceNum() == Float.MAX_VALUE) return null;
+		return bestFlight;
+	}
+	
+	public Flights getBestFlights() {
+		Flights bestFlights = new Flights();
+		
+		for (FlightType type : FlightType.values()){
+			Flight f = getBestFlightByFlightType(type); 
+			if (f != null) bestFlights.add(f);
+		}
+	
+		bestFlights.toString();
+		return bestFlights;
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (Flight f : list) {
+			sb.append(f.toString());
+			sb.append("\n");
+		}
+		return sb.toString();
+	}
+	
 	public String toHtml() {
 		
 		StringBuilder sb = new StringBuilder();
@@ -33,6 +68,8 @@ public class Flights {
 		appendHeaderCell(sb, "Departure");
 		appendHeaderCell(sb, "Arrival");
 		appendHeaderCell(sb, "Price");
+		appendHeaderCell(sb, "Company");
+		appendHeaderCell(sb, "FlightType");
 		sb.append("</tr>");
 		
 		for (Flight f : list) {
@@ -44,6 +81,8 @@ public class Flights {
 		appendDataCell(sb, f.getDeparture());
 		appendDataCell(sb, f.getArrival());
 		appendDataCell(sb, f.getPrice());
+		appendDataCell(sb, f.getCompany().toString());
+		appendDataCell(sb, f.getFlightType().toString());
 
 		sb.append("</tr>");
 		}
@@ -63,5 +102,7 @@ public class Flights {
 	void appendHeaderCell(StringBuilder sb, String contents) {
 	    appendTag(sb, "th", contents);
 	}
+	
+	
 
 }

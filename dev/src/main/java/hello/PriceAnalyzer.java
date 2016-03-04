@@ -62,7 +62,8 @@ public class PriceAnalyzer {
 			lstFlight.add(eSpirit.getFlights().getList());
 		}
 		System.out.println("finished");	
-		getBestFlight();
+		//System.out.println(lstFlight.getList().toString());
+		System.out.println(lstFlight.getBestFlights().toString());;
 		return true;
 	}
    
@@ -79,28 +80,26 @@ public class PriceAnalyzer {
 		return lstFlight.toHtml();		
 	}
 	
+	public String bestFlightsToHtml() {
+		return lstFlight.getBestFlights().toHtml();
+	}
+	
 	public void generateFlightInfo(){
 		if (from == null || to == null || depDate == null) return;
 		
 		//Normal Way
-		lstFlightInfo.add(new FlightInfo(from, to, depDate));
+		lstFlightInfo.add(new FlightInfo(from, to, depDate, FlightType.DEP_A));
+		//Normal Return
+		//*
+		if (retDate != null) lstFlightInfo.add(new FlightInfo(to, from, retDate, FlightType.RET_A));
 		
 		//Other Way
-		lstFlightInfo.add(new FlightInfo(to, from, depDate));
-		System.out.println(lstFlightInfo.size());
+		lstFlightInfo.add(new FlightInfo(to, from, depDate,FlightType.DEP_B));
+		//Other Return
+		if (retDate != null) lstFlightInfo.add(new FlightInfo(from, to, retDate, FlightType.RET_B));
+		//*/
 	}
 	
-	public Flights getBestFlight() {
-		Flight bestFlight = new Flight();
-		bestFlight.setPriceNum(Float.MAX_VALUE);
-		
-		for (Flight f : lstFlight.getList()) {
-			if (f.getPriceNum() < bestFlight.getPriceNum()) {
-				bestFlight = (Flight) f.clone();
-			}
-			
-		}
-		return new Flights();
-	}
+
 
 }

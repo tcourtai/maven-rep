@@ -4,25 +4,30 @@ public class Flight extends FlightInfo {
 	private String departure;
 	private String arrival;
 	private String price;
+	private Company company;
+
+
+
 	private float priceNum;
 	
 	public Flight() {
 		super();
 		this.departure = "UNKNOWN";
 		this.arrival = "UNKNOWN";
-		this.price = "UNKNOWN";
+		this.price = "";
 	};
 	
 	public Object clone() {
-		return new Flight(this.getFrom(), this.getTo(), this.getDate(), this.departure,this.arrival, this.price);
+		return new Flight(this.getFrom(), this.getTo(), this.getDate(), this.getFlightType(), this.departure,this.arrival, this.price, this.company);
 	};
 	
-	public Flight(String from, String to, String date, String departure, String arrival, String price) {
-		super(from, to, date);
+	public Flight(String from, String to, String date, FlightType fligthType, String departure, String arrival, String price, Company company) {
+		super(from, to, date, fligthType);
 		this.departure = departure;
 		this.arrival = arrival;
 		this.price = price;
 		this.priceNum = parsePrice(price);
+		this.company = company;
 	}
 	
 	public String getDeparture() {
@@ -53,6 +58,14 @@ public class Flight extends FlightInfo {
 		this.priceNum = priceNum;
 	}
 	
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+	
 	public String toString() {
 		return "############ Fligth details ###############"
 		+ " \nFrom : " + this.getFrom()
@@ -60,12 +73,19 @@ public class Flight extends FlightInfo {
 		+ " \nDate : " + this.getDate()
 		+ " \nDeparture : " + this.getDeparture()
 		+ " \nArrival : " + this.getArrival()
-		+ " \nPrice : " + this.getPrice();
+		+ " \nPrice : " + this.getPrice()
+		+ " \nCompany : " + this.getCompany();
 	}
 
 
-	public float parsePrice(String p){
+	public float parsePrice(String p) {
+		float fp = Float.MAX_VALUE;
 		p = p.replaceAll("\\$", "");
-		return Float.parseFloat(p);
+		try {
+			fp = Float.parseFloat(p);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return fp;
 	}
 }

@@ -26,6 +26,7 @@ public class GreetingController {
         System.out.println(pa.getTo());
         pa.start();
         model.addAttribute("message", pa.toHtml());
+        model.addAttribute("bestFlights", pa.bestFlightsToHtml());
         return "result";
         //return "redirect:/";
     }

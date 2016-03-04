@@ -4,6 +4,7 @@ public class FlightInfo {
 	private String from;
 	private String to;
 	private String date;
+	private FlightType flightType;
 	
 	public FlightInfo() {
 		this.from = "UNKNOWN";
@@ -11,10 +12,11 @@ public class FlightInfo {
 		this.date = "UNKNOWN";
 	};
 	
-	public FlightInfo(String from, String to, String date) {
+	public FlightInfo(String from, String to, String date, FlightType flightType) {
 		this.from = from;
 		this.to = to;
 		this.date = date;
+		this.flightType = flightType;
 	}
 	
 	public String getFrom() {
@@ -35,6 +37,14 @@ public class FlightInfo {
 	}
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public FlightType getFlightType() {
+		return flightType;
+	}
+
+	public void setFlightType(FlightType flightType) {
+		this.flightType = flightType;
 	}
 
 	public String toString() {

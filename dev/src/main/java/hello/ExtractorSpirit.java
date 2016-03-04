@@ -92,8 +92,11 @@ public boolean parse(){
 			f.setTo(doc.select("tr.arrivalInfo1").first().text());
 			f.setDate(fligthDate);
 			
+			f.setCompany(Company.SPIRIT);
+			f.setFlightType(flightInfo.getFlightType());
+			
 			flights.add(f);
-			System.out.println(f.toString());
+			//System.out.println(f.toString());
 			
 		}
 		   		
