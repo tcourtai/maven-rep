@@ -22,8 +22,8 @@ public class GreetingController {
 
     @RequestMapping("/save")
     public String save(PriceAnalyzer pa, Model model) {
-        System.out.println(pa.getFrom());
-        System.out.println(pa.getTo());
+        System.out.println(pa.getFromCode());
+        System.out.println(pa.getToCode());
         pa.start();
         model.addAttribute("message", pa.toHtml());
         model.addAttribute("bestFlights", pa.bestFlightsToHtml());

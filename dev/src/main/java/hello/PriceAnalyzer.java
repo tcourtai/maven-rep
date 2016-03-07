@@ -27,26 +27,27 @@ import com.mashape.unirest.request.GetRequest;
 
 public class PriceAnalyzer {
 
-    private String from;
-    private String to;
+    private String fromCode;
+    private String toCode;
     private String depDate;
     private String retDate;
+    private int range = 1;
     private Flights lstFlight = new Flights();
     private ArrayList<FlightInfo> lstFlightInfo = new ArrayList<FlightInfo>();
     private ArrayList<String> lstDepDate = new ArrayList<String>();
     private ArrayList<String> lstRetDate = new ArrayList<String>();;
 
-    public String getFrom() {
-		return from;
+    public String getFromCode() {
+		return fromCode;
 	}
-	public void setFrom(String from) {
-		this.from = from;
+	public void setFromCode(String from) {
+		this.fromCode = from;
 	}
-	public String getTo() {
-		return to;
+	public String getToCode() {
+		return toCode;
 	}
-	public void setTo(String to) {
-		this.to = to;
+	public void setToCode(String to) {
+		this.toCode = to;
 	}
 	
 	public String getDepDate() {
@@ -63,6 +64,12 @@ public class PriceAnalyzer {
 		this.retDate = date;
 	}
 	
+	public int getRange() {
+		return range;
+	}
+	public void setRange(int range) {
+		this.range = range;
+	}
 	public boolean start() {
 		System.out.println("lets go!");
 		computeDates();
@@ -105,17 +112,19 @@ public class PriceAnalyzer {
 			if  (depDate != null) {
 			Date depDateToDate = formatter.parse(depDate);
 			//lstDepDate.add(formatter.format(depDateToDate));
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < range; i++) {
 				lstDepDate.add(formatter.format(DateUtil.addDays(depDateToDate, i)));
 			}
 			}
 			
+			/*
 			if  (retDate != null) {
 			Date retDateToDate = formatter.parse(retDate);
 			lstRetDate.add(formatter.format(retDateToDate));
 			lstRetDate.add(formatter.format(DateUtil.addDays(retDateToDate, 1)));
 			lstRetDate.add(formatter.format(DateUtil.addDays(retDateToDate, -1)));
 			}
+			*/
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -123,14 +132,14 @@ public class PriceAnalyzer {
 	
 	
 	public void generateFlightInfo(){
-		if (from == null || to == null) return;
+		if (fromCode == null || toCode == null) return;
 		
 		System.out.println(lstDepDate.size());
 		for (String d : lstDepDate) {
 			//Normal Way
-			lstFlightInfo.add(new FlightInfo(from, to, d, FlightType.DEP_A));
+			lstFlightInfo.add(new FlightInfo(fromCode, toCode, d, FlightType.DEP_A));
 			//Other Way
-			lstFlightInfo.add(new FlightInfo(to, from, d,FlightType.DEP_B));
+			lstFlightInfo.add(new FlightInfo(toCode, fromCode, d,FlightType.DEP_B));
 		}
 		
 		/*for (String d : lstRetDate) {
@@ -142,7 +151,6 @@ public class PriceAnalyzer {
 			
 		}
 		//*/
-		
 	}
 	
 

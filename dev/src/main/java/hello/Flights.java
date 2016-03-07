@@ -29,7 +29,8 @@ public class Flights {
 		
 		for (Flight f : list) {
 			if (f.getPriceNum() < bestFlight.getPriceNum() && f.getFlightType() == ft) {
-				bestFlight = (Flight) f.clone();
+				//bestFlight = (Flight) f.clone();
+				bestFlight = f;
 			}
 			
 		}
@@ -60,7 +61,7 @@ public class Flights {
 	
 	public List<String> toCSV() {
 		List<String> txtToCSV = new ArrayList<String>();
-		txtToCSV.add("From;To;Date;Departure;Arrival;Price;Company;FlightType");
+		txtToCSV.add("From;FromCode;To;ToCode;Date;Departure;Arrival;Price;Company;FlightType");
 		for (Flight f : list) {
 			txtToCSV.add(f.toCSV());
 		}		
@@ -72,7 +73,9 @@ public class Flights {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table><tr>");
 		appendHeaderCell(sb, "From");
+		appendHeaderCell(sb, "FromCode");
 		appendHeaderCell(sb, "To");
+		appendHeaderCell(sb, "ToCode");
 		appendHeaderCell(sb, "Date");
 		appendHeaderCell(sb, "Departure");
 		appendHeaderCell(sb, "Arrival");
@@ -83,9 +86,11 @@ public class Flights {
 		
 		for (Flight f : list) {
 		sb.append("<tr>");
-		
+
 		appendDataCell(sb, f.getFrom());
+		appendDataCell(sb, f.getFromCode());
 		appendDataCell(sb, f.getTo());
+		appendDataCell(sb, f.getToCode());
 		appendDataCell(sb, f.getDate());
 		appendDataCell(sb, f.getDeparture());
 		appendDataCell(sb, f.getArrival());

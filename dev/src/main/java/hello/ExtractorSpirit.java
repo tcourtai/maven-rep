@@ -14,6 +14,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class ExtractorSpirit extends Extractor {
 	private String html;
+	private final Company company = Company.SPIRIT;
 	
 	public ExtractorSpirit(FlightInfo fi) {
 		super(fi);
@@ -39,7 +40,7 @@ public class ExtractorSpirit extends Extractor {
 					  .header("accept-encoding", "gzip, deflate")
 					  .header("accept-language", "fr,en-US;q=0.8,en;q=0.6")
 					  .header("cache-control", "no-cache")
-					  .body("ADT=1&CHD=0&INF=0&awardFSNumber=&birthdates=03%2F02%2F2016&bookingType=F&departDate="+ getDateToHtml(flightInfo.getDate()) +"&departDateDisplay="+ getDateToHtml(flightInfo.getDate()) +"&from="+ flightInfo.getFrom() + "&promoCode=&returnDate=03%2F16%2F2016&returnDateDisplay=03%2F16%2F2016&to=" + flightInfo.getTo() + "&tripType=oneWay")
+					  .body("ADT=1&CHD=0&INF=0&awardFSNumber=&birthdates=03%2F02%2F2016&bookingType=F&departDate="+ getDateToHtml(flightInfo.getDate()) +"&departDateDisplay="+ getDateToHtml(flightInfo.getDate()) +"&from="+ flightInfo.getFromCode() + "&promoCode=&returnDate=03%2F16%2F2016&returnDateDisplay=03%2F16%2F2016&to=" + flightInfo.getToCode() + "&tripType=oneWay")
 					  .asString();
 	
 				
@@ -49,6 +50,7 @@ public class ExtractorSpirit extends Extractor {
 			
 		} catch (UnirestException e) {
 			e.printStackTrace();
+			System.out.println(msgNoResult(company));
 		}
 				
 	}
@@ -56,13 +58,13 @@ public class ExtractorSpirit extends Extractor {
 	
 public boolean parse(){
 		
-	
 		Document doc = Jsoup.parse(html);
 
 		//from	= doc.select("tr.departureInfo1").first().text();
 		//to		= doc.select("tr.arrivalInfo1").first().text();
 		//fligthDate	= doc.select("div.date").first().text();
-				
+		
+		try {
 		Element tbody = doc.select("tbody.sortThisTable").first();
 		Elements lstflights = tbody.select("tr.rowsMarket1");
 
@@ -80,7 +82,7 @@ public boolean parse(){
 			f.setTo(doc.select("tr.arrivalInfo1").first().text());
 			f.setDate(flightInfo.getDate());
 			
-			f.setCompany(Company.SPIRIT);
+			f.setCompany(company);
 			f.setFlightType(flightInfo.getFlightType());
 			
 			flights.add(f);
@@ -89,5 +91,12 @@ public boolean parse(){
 		}
 		   		
 		return true;
+				
+		}
+		
+		catch (Exception ex) {
+			System.out.println(msgNoResult(company));
+		}
+		return false;
 	}
 }

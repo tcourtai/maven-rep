@@ -21,5 +21,9 @@ public class Extractor {
 				+ slash
 				+ d.split("-")[0];
 	}
+	
+	public String msgNoResult(Company comp) {
+		return "No result for "  + comp.toString();
+	}
 		
 }

@@ -18,11 +18,11 @@ public class Flight extends FlightInfo {
 	};
 	
 	public Object clone() {
-		return new Flight(this.getFrom(), this.getTo(), this.getDate(), this.getFlightType(), this.departure,this.arrival, this.price, this.company);
+		return new Flight(this.getFromCode(), this.getToCode(), this.getDate(), this.getFlightType(), this.departure,this.arrival, this.price, this.company);
 	};
 	
-	public Flight(String from, String to, String date, FlightType fligthType, String departure, String arrival, String price, Company company) {
-		super(from, to, date, fligthType);
+	public Flight(String fromCode, String toCode, String date, FlightType fligthType, String departure, String arrival, String price, Company company) {
+		super(fromCode, toCode, date, fligthType);
 		this.departure = departure;
 		this.arrival = arrival;
 		this.price = price;
@@ -68,8 +68,8 @@ public class Flight extends FlightInfo {
 	
 	public String toString() {
 		return "############ Fligth details ###############"
-		+ " \nFrom : " + this.getFrom()
-		+ " \nTo : " + this.getTo()
+		+ " \nFrom(Code) : " + this.getFromCode()
+		+ " \nTo(Code) : " + this.getToCode()
 		+ " \nDate : " + this.getDate()
 		+ " \nDeparture : " + this.getDeparture()
 		+ " \nArrival : " + this.getArrival()
@@ -80,7 +80,9 @@ public class Flight extends FlightInfo {
 	public String toCSV() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(addItemToCSV(this.getFrom()));
+		sb.append(addItemToCSV(this.getFromCode()));
 		sb.append(addItemToCSV(this.getTo()));
+		sb.append(addItemToCSV(this.getToCode()));
 		sb.append(addItemToCSV(this.getDate()));
 		sb.append(addItemToCSV(this.getDeparture()));
 		sb.append(addItemToCSV(this.getArrival()));
