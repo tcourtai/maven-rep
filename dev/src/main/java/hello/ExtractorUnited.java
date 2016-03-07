@@ -1,18 +1,19 @@
 package hello;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -28,6 +29,8 @@ public class ExtractorUnited extends Extractor {
 
 	private String html;
 	private final String unitedUrl = "https://mobile.united.com";
+	private Map<String, String> mapAirport;
+	private  final String pathAirportList = "C:\\Users\\tcour\\Documents\\UnitedAirports.txt";
 
 	public ExtractorUnited(FlightInfo fi) {
 		super(fi);
@@ -36,6 +39,7 @@ public class ExtractorUnited extends Extractor {
 
 
 	public void start(){
+		loadAirportList();
 		queryToHtml();
 		parse();
 	};
@@ -45,6 +49,15 @@ public class ExtractorUnited extends Extractor {
 		System.out.println("Searching for ...." + flightInfo.toString());
 		HttpResponse<String> response;
 		try {
+			String fromToHtml = StringEscapeUtils.escapeHtml(resolveCode(flightInfo.getFromCode()));
+			String toToHtml = StringEscapeUtils.escapeHtml(resolveCode(flightInfo.getToCode()));
+			String body = "Cabin=Coach&DepartDate=" + flightInfo.getDate() 
+					+ "&DepartTime=0000&FromCode=" + flightInfo.getFromCode() 
+					+ "&NonstopOnly=true&NumberOfAdults=1&SearchBy=P&SearchType=OW&ToCode=" + flightInfo.getToCode() 
+					+ "&From=" + fromToHtml 
+					+ "&To=" + toToHtml;
+			System.out.println(body);
+			
 			response = Unirest.post("https://mobile.united.com/Booking/OneWaySearch")
 					.header("accept", "text/html, */*; q=0.01")
 					.header("origin", "https://mobile.united.com")
@@ -53,7 +66,7 @@ public class ExtractorUnited extends Extractor {
 					.header("content-type", "application/x-www-form-urlencoded; charset=UTF-8")
 					.header("accept-encoding", "gzip, deflate")
 					.header("accept-language", "fr,en-US;q=0.8,en;q=0.6")
-					.body("Cabin=Coach&DepartDate=" + flightInfo.getDate() + "&DepartTime=0000&FromCode=DFW&NonstopOnly=true&NumberOfAdults=1&SearchBy=P&SearchType=OW&ToCode=CHI&From=Dallas%2FFort+Worth%2C+TX+(DFW)&To=Chicago, IL, US (CHI - All Airports)")
+					.body(body)
 					//.body("Cabin=Coach&DepartDate=2016-03-12&DepartTime=0000&FromCode=DFW&NonstopOnly=true&NumberOfAdults=1&SearchBy=P&SearchType=OW&ToCode=NYC")
 					.asString();
 
@@ -141,8 +154,15 @@ public class ExtractorUnited extends Extractor {
 	}
 
 	public String resolveCode(String code) {
-
-		return "";
+		return mapAirport.get(code);
+	}
+	
+	public void loadAirportList () {
+		ArrayList<String> list = FileUtil.readFileByLine(pathAirportList);
+		mapAirport = new HashMap<String, String>();
+		for (String line : list) {
+			mapAirport.put(line.split(FileUtil.csvSeparator)[0], line.split(FileUtil.csvSeparator)[1]);
+		}			
 	}
 
 	public void generateAirportList() {
@@ -176,7 +196,7 @@ public class ExtractorUnited extends Extractor {
 			listAirportCSV.add(airport.toCSV());
 		}
 		
-		FileUtil.writeCSV(Paths.get("C:\\Users\\tcour\\Documents\\UnitedAirports.txt"), listAirportCSV);
+		FileUtil.writeCSV(Paths.get(pathAirportList), listAirportCSV);
 
 	}
 
@@ -191,6 +211,6 @@ public class ExtractorUnited extends Extractor {
 			this.name = name;
 		}
 
-		public String toCSV () {return code + FileUtil.csvSeparator + shortName + FileUtil.csvSeparator + name;} 
+		public String toCSV () {return code + FileUtil.csvSeparator + shortName;} 
 	}
 }
