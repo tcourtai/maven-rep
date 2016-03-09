@@ -1,22 +1,21 @@
 package org.tcourtai.friends2go.hello;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class Flight extends FlightInfo {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long id;
+
 	private String departure;
 	private String arrival;
 	private String price;
+	
+	@Enumerated(EnumType.STRING)
 	private Company company;
-
-
-
 	private float priceNum;
 	
 	public Flight() {

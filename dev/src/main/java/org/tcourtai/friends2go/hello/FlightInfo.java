@@ -1,16 +1,32 @@
 package org.tcourtai.friends2go.hello;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
+@Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public class FlightInfo {
-	private String from;
-	private String to;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private long id;
+	private String xfrom;
+	private String xto;
 	private String fromCode;
 	private String toCode;
 	private String date;
+	
+	@Enumerated(EnumType.STRING)
 	private FlightType flightType;
 	
 	public FlightInfo() {
-		this.from = "UNKNOWN";
-		this.to = "UNKNOWN";
+		this.xfrom = "UNKNOWN";
+		this.xto = "UNKNOWN";
 		this.date = "UNKNOWN";
 		this.fromCode = "N/A";
 		this.toCode = "N/A";
@@ -24,17 +40,17 @@ public class FlightInfo {
 	}
 	
 	public String getFrom() {
-		return from;
+		return xfrom;
 	}
 	public void setFrom(String from) {
-		this.from = from;
+		this.xfrom = from;
 		this.fromCode = Extractor.extractCode(from);
 	}
 	public String getTo() {
-		return to;
+		return xto;
 	}
 	public void setTo(String to) {
-		this.to = to;
+		this.xto = to;
 		this.toCode = Extractor.extractCode(to);
 	}
 	
@@ -71,8 +87,8 @@ public class FlightInfo {
 
 	public String toString() {
 		return "############ Flight info ###############"
-				+ " \nFrom : " + this.from
-				+ " \nTo : " + this.to
+				+ " \nFrom : " + this.xfrom
+				+ " \nTo : " + this.xto
 				+ " \nFrom(Code) : " + this.fromCode
 				+ " \nTo(Code) : " + this.toCode
 				+ " \nDate : " + this.date;

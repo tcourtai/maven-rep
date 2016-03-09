@@ -30,7 +30,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.GetRequest;
 
-
+@Component
 public class PriceAnalyzer {
 	
 
@@ -101,9 +101,9 @@ public class PriceAnalyzer {
 		return true;
 	}
    
-	
-	
-	
+	public Flights getFlights() {
+		return lstFlight;
+	}
 	
 	public String toHtml() {
 		return lstFlight.toHtml();		
@@ -160,23 +160,4 @@ public class PriceAnalyzer {
 		}
 		//*/
 	}
-	
-	public void test (TotoRepository totoRepository) {
-		
-		totoRepository.save(new Toto("test"));
-    	totoRepository.save(new Toto("test2"));
-    	
-    	Iterable<Toto> totos = totoRepository.findAll();
-        
-        int count = 0;
- 
-        for(Toto p : totos){
-            count++;
-
-            System.out.println(p.toString());
-        }
-	}
-	
-
-
 }

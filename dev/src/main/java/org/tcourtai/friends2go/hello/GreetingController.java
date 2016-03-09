@@ -19,14 +19,19 @@ public class GreetingController {
 	
 	private static final Logger log = LoggerFactory.getLogger(Application.class);
 	
-	//@Autowired
-	private TotoRepository totoRepository;
+	private FlightRepository flightRepository;
+	
+	@Autowired
+	public GreetingController(FlightRepository flightRepository) {
+		this.flightRepository = flightRepository;
+	}	
+	
 	
     @RequestMapping("/")
     public String index(Model model) {
         PriceAnalyzer priceAnalyzer = new PriceAnalyzer();
         model.addAttribute("PriceAnalyzer", priceAnalyzer);
-        priceAnalyzer.test(totoRepository);
+        //priceAnalyzer.test(totoRepository);
         //gizmo.parseResult();
         //model.addAttribute("message", gizmo.toHtml());
         return "hello";
@@ -37,7 +42,10 @@ public class GreetingController {
         System.out.println(pa.getFromCode());
         System.out.println(pa.getToCode());
         pa.start();
-        model.addAttribute("message", pa.toHtml());
+        Flights flights = pa.getFlights();
+        flightRepository.save(flights.getList());
+
+        //model.addAttribute("message", pa.toHtml());
         model.addAttribute("bestFlights", pa.bestFlightsToHtml());
         return "result";
         //return "redirect:/";
