@@ -69,7 +69,7 @@ public boolean parse(){
 		Elements lstflights = tbody.select("tr.rowsMarket1");
 
 		for (Element flight : lstflights){
-			Flight f = new Flight();
+			Flight f = new Flight(flightInfo);
 
 			String dep = flight.select("td.depart").first().text();
 			f.setDeparture(dep.substring(18, dep.length()));
@@ -83,7 +83,7 @@ public boolean parse(){
 			f.setDate(flightInfo.getDate());
 			
 			f.setCompany(company);
-			f.setFlightType(flightInfo.getFlightType());
+			//f.setFlightType(flightInfo.getFlightType());
 			
 			flights.add(f);
 			//System.out.println(f.toString());

@@ -7,7 +7,7 @@ public class Test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		ExtractorUnited eu = new ExtractorUnited(new FlightInfo("ORD", "DFW", "2016-05-01", FlightType.DEP_A));
+		ExtractorUnited eu = new ExtractorUnited(new FlightInfo("TEST","ORD", "DFW", "2016-05-01", FlightType.DEP_A));
 		//eu.start();
 		Extractor.extractCode("Dallas/Ft. Worth (DFW)");
 		Extractor.extractCode("AAA");

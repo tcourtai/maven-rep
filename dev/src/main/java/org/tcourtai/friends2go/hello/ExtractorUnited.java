@@ -110,7 +110,7 @@ public class ExtractorUnited extends Extractor {
 		Elements lstflights = doc.select("ul[data-role]");
 
 		for (Element flight : lstflights){
-			Flight f = new Flight();
+			Flight f = new Flight(flightInfo);
 
 			Elements eDetails = flight.select("div.grid_7");
 
@@ -144,10 +144,10 @@ public class ExtractorUnited extends Extractor {
 				f.setPrice(m.group(1));
 			}
 
-			f.setDate(flightInfo.getDate());
+			//f.setDate(flightInfo.getDate());
 
 			f.setCompany(Company.UNITED);
-			f.setFlightType(flightInfo.getFlightType());
+			//f.setFlightType(flightInfo.getFlightType());
 			//System.out.println(f.toString());
 			flights.add(f);
 			//System.out.println(f.toString());

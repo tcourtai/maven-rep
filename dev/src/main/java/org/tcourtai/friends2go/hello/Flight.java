@@ -25,12 +25,16 @@ public class Flight extends FlightInfo {
 		this.price = "";
 	};
 	
-	public Object clone() {
-		return new Flight(this.getFromCode(), this.getToCode(), this.getDate(), this.getFlightType(), this.departure,this.arrival, this.price, this.company);
+	public Flight(FlightInfo fi) {
+		super(fi);
+		this.departure = "UNKNOWN";
+		this.arrival = "UNKNOWN";
+		this.price = "";
 	};
 	
-	public Flight(String fromCode, String toCode, String date, FlightType fligthType, String departure, String arrival, String price, Company company) {
-		super(fromCode, toCode, date, fligthType);
+	
+	public Flight(String searchID, String fromCode, String toCode, String date, FlightType fligthType, String departure, String arrival, String price, Company company) {
+		super(searchID, fromCode, toCode, date, fligthType);
 		this.departure = departure;
 		this.arrival = arrival;
 		this.price = price;

@@ -34,7 +34,7 @@ import com.mashape.unirest.request.GetRequest;
 public class PriceAnalyzer {
 	
 
-
+	private String searchID;
     private String fromCode;
     private String toCode;
     private String depDate;
@@ -80,6 +80,7 @@ public class PriceAnalyzer {
 	}
 	public boolean start() {
 		System.out.println("lets go!");
+		searchID = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		computeDates();
 		generateFlightInfo();
 		for (FlightInfo fi : lstFlightInfo) {
@@ -96,8 +97,7 @@ public class PriceAnalyzer {
 		//System.out.println(lstFlight.getList().toString());
 		//System.out.println(lstFlight.getBestFlights().toString());;
 		//*/
-		String timestamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-		FileUtil.writeCSV(Paths.get("C:\\Users\\tcour\\Documents\\result_" + timestamp), lstFlight.toCSV());
+		//FileUtil.writeCSV(Paths.get("C:\\Users\\tcour\\Documents\\result_" + searchID + ".csv"), lstFlight.toCSV());
 		return true;
 	}
    
@@ -145,9 +145,9 @@ public class PriceAnalyzer {
 		System.out.println(lstDepDate.size());
 		for (String d : lstDepDate) {
 			//Normal Way
-			lstFlightInfo.add(new FlightInfo(fromCode, toCode, d, FlightType.DEP_A));
+			lstFlightInfo.add(new FlightInfo(searchID, fromCode, toCode, d, FlightType.DEP_A));
 			//Other Way
-			lstFlightInfo.add(new FlightInfo(toCode, fromCode, d,FlightType.DEP_B));
+			lstFlightInfo.add(new FlightInfo(searchID, toCode, fromCode, d,FlightType.DEP_B));
 		}
 		
 		/*for (String d : lstRetDate) {

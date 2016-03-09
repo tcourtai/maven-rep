@@ -1,5 +1,7 @@
 package org.tcourtai.friends2go.hello;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -8,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
@@ -15,6 +19,9 @@ public class FlightInfo {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
+	
+	private String searchID;
+	
 	private String xfrom;
 	private String xto;
 	private String fromCode;
@@ -30,9 +37,21 @@ public class FlightInfo {
 		this.date = "UNKNOWN";
 		this.fromCode = "N/A";
 		this.toCode = "N/A";
+		this.searchID = "N/A";
 	};
 	
-	public FlightInfo(String fromCode, String toCode, String date, FlightType flightType) {
+	public FlightInfo(FlightInfo fi) {
+		this.xfrom = fi.getFrom();
+		this.xto = fi.getTo();
+		this.date = fi.getDate();
+		this.fromCode = fi.getFromCode();
+		this.toCode = fi.getToCode();
+		this.searchID = fi.getSearchID();
+		this.flightType = fi.getFlightType();
+	};
+	
+	public FlightInfo(String searchID, String fromCode, String toCode, String date, FlightType flightType) {
+		this.searchID = searchID;
 		this.fromCode = fromCode;
 		this.toCode = toCode;
 		this.date = date;
@@ -83,6 +102,14 @@ public class FlightInfo {
 
 	public void setFlightType(FlightType flightType) {
 		this.flightType = flightType;
+	}
+
+	public String getSearchID() {
+		return searchID;
+	}
+
+	public void setSearchID(String searchID) {
+		this.searchID = searchID;
 	}
 
 	public String toString() {
