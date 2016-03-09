@@ -1,4 +1,4 @@
-package hello;
+package org.tcourtai.friends2go.hello;
 
 public enum FlightType {
 	DEP_A (Group.A),

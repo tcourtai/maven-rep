@@ -1,6 +1,15 @@
-package hello;
+package org.tcourtai.friends2go.hello;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Flight extends FlightInfo {
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private long id;
 	private String departure;
 	private String arrival;
 	private String price;
@@ -66,6 +75,7 @@ public class Flight extends FlightInfo {
 		this.company = company;
 	}
 	
+	@Override
 	public String toString() {
 		return "############ Fligth details ###############"
 		+ " \nFrom(Code) : " + this.getFromCode()

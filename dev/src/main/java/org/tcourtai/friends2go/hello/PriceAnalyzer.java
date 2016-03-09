@@ -1,4 +1,4 @@
-package hello;
+package org.tcourtai.friends2go.hello;
 
 
 import java.io.IOException;
@@ -16,6 +16,13 @@ import java.util.List;
 
 
 
+
+
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.thymeleaf.util.DateUtils;
 
 import com.mashape.unirest.http.HttpResponse;
@@ -24,8 +31,9 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.GetRequest;
 
 
-
 public class PriceAnalyzer {
+	
+
 
     private String fromCode;
     private String toCode;
@@ -151,6 +159,22 @@ public class PriceAnalyzer {
 			
 		}
 		//*/
+	}
+	
+	public void test (TotoRepository totoRepository) {
+		
+		totoRepository.save(new Toto("test"));
+    	totoRepository.save(new Toto("test2"));
+    	
+    	Iterable<Toto> totos = totoRepository.findAll();
+        
+        int count = 0;
+ 
+        for(Toto p : totos){
+            count++;
+
+            System.out.println(p.toString());
+        }
 	}
 	
 

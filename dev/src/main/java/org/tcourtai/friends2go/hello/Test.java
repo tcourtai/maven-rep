@@ -1,4 +1,4 @@
-package hello;
+package org.tcourtai.friends2go.hello;
 
 
 
@@ -8,7 +8,9 @@ public class Test {
 		// TODO Auto-generated method stub
 		
 		ExtractorUnited eu = new ExtractorUnited(new FlightInfo("ORD", "DFW", "2016-05-01", FlightType.DEP_A));
-		eu.start();
+		//eu.start();
+		Extractor.extractCode("Dallas/Ft. Worth (DFW)");
+		Extractor.extractCode("AAA");
 		//System.out.println(eu.flights.toString());
 		
 		//eu.generateAirportList();

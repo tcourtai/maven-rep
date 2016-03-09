@@ -1,4 +1,4 @@
-package hello;
+package org.tcourtai.friends2go.hello;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -126,10 +126,14 @@ public class ExtractorUnited extends Extractor {
 				System.out.println(s);
 			}*/
 
-			details = eDetails.get(1).html();
-			detailsTab = details.split(">");
-			f.setArrival(detailsTab[1].replaceAll("</span", ""));
-			f.setTo(detailsTab[4]);			
+			//get last flight in case of trip with stop(s)
+			for (Element e : eDetails) {
+				details = e.html(); 
+				if (details.contains("</span")) {
+						detailsTab = details.split(">");
+						f.setArrival(detailsTab[1].replaceAll("</span", ""));
+						f.setTo(detailsTab[4]);	}
+			}
 
 			Element ePrice = flight.select("input#btnPickTrip").first();
 

@@ -1,4 +1,4 @@
-package hello;
+package org.tcourtai.friends2go.hello;
 
 import java.io.File;
 import java.io.FileNotFoundException;

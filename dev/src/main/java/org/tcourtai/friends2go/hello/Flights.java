@@ -1,4 +1,4 @@
-package hello;
+package org.tcourtai.friends2go.hello;
 
 import java.util.ArrayList;
 import java.util.Collection;

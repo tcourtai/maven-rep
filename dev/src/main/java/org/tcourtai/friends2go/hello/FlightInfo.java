@@ -1,4 +1,4 @@
-package hello;
+package org.tcourtai.friends2go.hello;
 
 public class FlightInfo {
 	private String from;
@@ -28,12 +28,14 @@ public class FlightInfo {
 	}
 	public void setFrom(String from) {
 		this.from = from;
+		this.fromCode = Extractor.extractCode(from);
 	}
 	public String getTo() {
 		return to;
 	}
 	public void setTo(String to) {
 		this.to = to;
+		this.toCode = Extractor.extractCode(to);
 	}
 	
 	public String getFromCode() {
