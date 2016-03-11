@@ -131,8 +131,11 @@ public class ExtractorUnited extends Extractor {
 				details = e.html(); 
 				if (details.contains("</span")) {
 						detailsTab = details.split(">");
+						if (detailsTab.length > 4) {
 						f.setArrival(detailsTab[1].replaceAll("</span", ""));
-						f.setTo(detailsTab[4]);	}
+						f.setTo(detailsTab[4]);	
+						}
+				}
 			}
 
 			Element ePrice = flight.select("input#btnPickTrip").first();

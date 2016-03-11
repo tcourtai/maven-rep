@@ -43,7 +43,8 @@ public class PriceAnalyzer {
     private Flights lstFlight = new Flights();
     private ArrayList<FlightInfo> lstFlightInfo = new ArrayList<FlightInfo>();
     private ArrayList<String> lstDepDate = new ArrayList<String>();
-    private ArrayList<String> lstRetDate = new ArrayList<String>();;
+    private ArrayList<String> lstFromCode = new ArrayList<String>();
+    private ArrayList<String> lstToCode = new ArrayList<String>();
 
     public String getFromCode() {
 		return fromCode;
@@ -82,6 +83,7 @@ public class PriceAnalyzer {
 		System.out.println("lets go!");
 		searchID = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		computeDates();
+		computeAirportCode();
 		generateFlightInfo();
 		for (FlightInfo fi : lstFlightInfo) {
 			ExtractorSpirit eSpirit = new ExtractorSpirit(fi);
@@ -138,16 +140,49 @@ public class PriceAnalyzer {
 		}
 	}
 	
+	public void computeAirportCode() {
+		lstFromCode = getAirportCodes(fromCode);
+		lstToCode = getAirportCodes(toCode);
+	}
+	
+	public ArrayList<String> getAirportCodes(String code){		
+		ArrayList<String> lst = new ArrayList<String>();
+		
+		switch (code) {
+		case "NYC" : 
+			lst.add("JFK");
+			lst.add("LGA");
+			lst.add("EWR");
+			break;
+		case "WAS" : 
+			lst.add("IAD");
+			lst.add("DCA");
+			break;
+		case "YMQ" : 
+			lst.add("YUL");
+			lst.add("YMX");	
+			break;
+		default : 
+			lst.add(code);		
+		}
+
+		return lst;
+		
+	}
 	
 	public void generateFlightInfo(){
 		if (fromCode == null || toCode == null) return;
 		
 		System.out.println(lstDepDate.size());
 		for (String d : lstDepDate) {
+			for (String f : lstFromCode) {
+				for (String t : lstToCode) {
 			//Normal Way
-			lstFlightInfo.add(new FlightInfo(searchID, fromCode, toCode, d, FlightType.DEP_A));
+			lstFlightInfo.add(new FlightInfo(searchID, f, t, d, FlightType.DEP_A));
 			//Other Way
-			lstFlightInfo.add(new FlightInfo(searchID, toCode, fromCode, d,FlightType.DEP_B));
+			lstFlightInfo.add(new FlightInfo(searchID, t, f, d,FlightType.DEP_B));
+				}
+			}
 		}
 		
 		/*for (String d : lstRetDate) {
