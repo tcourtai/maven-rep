@@ -89,10 +89,14 @@ public class PriceAnalyzer {
 			ExtractorSpirit eSpirit = new ExtractorSpirit(fi);
 			eSpirit.start();		
 			lstFlight.add(eSpirit.getFlights().getList());
-			
+
 			ExtractorUnited eUnited = new ExtractorUnited(fi);
 			eUnited.start();		
-			lstFlight.add(eUnited.getFlights().getList());		
+			lstFlight.add(eUnited.getFlights().getList());
+			
+			ExtractorAmericanAirlines eAA = new ExtractorAmericanAirlines(fi);
+			eAA.start();		
+			lstFlight.add(eAA.getFlights().getList());		
 			
 		}
 		System.out.println("finished");	

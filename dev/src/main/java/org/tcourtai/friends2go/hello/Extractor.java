@@ -32,7 +32,7 @@ public class Extractor {
 	
 	public static String extractCode(String airport){
 		String code = "";
-		Pattern p = Pattern.compile(".*[(]([A-Z]{3})[)].*");
+		Pattern p = Pattern.compile(".*[(]?([A-Z]{3})[)]?.*");
 		Matcher m = p.matcher(airport);
 		if(m.matches()) {
 		    code = m.group(1);

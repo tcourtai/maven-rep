@@ -2,5 +2,6 @@ package org.tcourtai.friends2go.hello;
 
 public enum Company {
 	SPIRIT,
-	UNITED
+	UNITED,
+	AmericanAirlines
 }

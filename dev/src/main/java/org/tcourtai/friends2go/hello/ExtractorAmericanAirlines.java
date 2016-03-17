@@ -7,11 +7,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
@@ -25,6 +28,7 @@ public class ExtractorAmericanAirlines extends Extractor{
 	
 	public void start() {
 		queryToHtml();
+		parse();
 	}	
 	public void queryToHtml() {
 		html = "";
@@ -72,6 +76,62 @@ public class ExtractorAmericanAirlines extends Extractor{
 			e.printStackTrace();
 		}
 
+	}
+	
+	public boolean parse(){
+
+		Document doc = Jsoup.parse(html);
+
+		Elements lstflights = doc.select("[class~=^lmb[0-9]*bl$]");
+		System.out.println("nb flights "+ lstflights.size());
+
+		for (Element flight : lstflights){
+			Flight f = new Flight(flightInfo);
+			Elements eDetails = flight.select("div.bord");
+			
+			if (eDetails.size() == 0) break;
+
+			Elements items = eDetails.first().select("div.un_fs12");
+			for (Element it : items) {
+				if (it.text().contains("Departing")) {
+					Pattern p = Pattern.compile("Departing : ([A-Z]{3} [A-Za-z/,\\s]+)\\D+([0-9]+:[0-9]+.*)");
+					//Pattern p = Pattern.compile("Departing : ([A-Z]{3}.+)(\\d+:\\d+ [A-Z]+)");
+					Matcher m = p.matcher(it.text());
+					while (m.find()) {
+						f.setFrom(m.group(1));
+						f.setDeparture(m.group(2));
+					}
+				}
+				
+			}
+			
+			for (Element detail : eDetails) {
+				items = detail.select("div.un_fs12");
+				for (Element it : items) {
+				if (it.text().contains("Arriving")) {
+					Pattern p = Pattern.compile("Arriving : ([A-Z]{3} [A-Za-z/,\\s]+)\\D+([0-9]+:[0-9]+.*)");
+					//Pattern p = Pattern.compile("Departing : ([A-Z]{3}.+)(\\d+:\\d+ [A-Z]+)");
+					Matcher m = p.matcher(it.text());
+					while (m.find()) {
+						f.setTo(m.group(1));
+						f.setArrival(m.group(2));
+					}
+				}
+				}
+			}
+			
+			Element ePrice = flight.select("div.un_fs13").first();
+			Pattern p = Pattern.compile("\\D*([0-9]+[.]?[0-9]+)\\D*");
+			Matcher m = p.matcher(ePrice.text());
+			while (m.find()) {
+				f.setPrice(m.group(1));
+			}
+			
+			f.setCompany(Company.AmericanAirlines);
+			flights.add(f);
+		}
+
+		return true;
 	}
 
 
