@@ -1,6 +1,7 @@
 package org.tcourtai.friends2go.hello;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,10 +28,8 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class ExtractorUnited extends Extractor {
 
-	private String html;
 	private final String unitedUrl = "https://mobile.united.com";
 	private Map<String, String> mapAirport;
-	private  final String pathAirportList = "C:\\Users\\tcour\\Documents\\UnitedAirports.txt";
 
 	public ExtractorUnited(FlightInfo fi) {
 		super(fi);
@@ -165,7 +164,9 @@ public class ExtractorUnited extends Extractor {
 	}
 	
 	public void loadAirportList () {
-		ArrayList<String> list = FileUtil.readFileByLine(pathAirportList);
+		URL url = this.getClass().getClassLoader().getResource("UnitedAirports.txt");
+	    String path = url.toString().substring(6);
+		ArrayList<String> list = FileUtil.readFileByLine(path);
 		mapAirport = new HashMap<String, String>();
 		for (String line : list) {
 			mapAirport.put(line.split(FileUtil.csvSeparator)[0], line.split(FileUtil.csvSeparator)[1]);
@@ -203,7 +204,7 @@ public class ExtractorUnited extends Extractor {
 			listAirportCSV.add(airport.toCSV());
 		}
 		
-		FileUtil.writeCSV(Paths.get(pathAirportList), listAirportCSV);
+		FileUtil.writeCSV(Paths.get("export.csv"), listAirportCSV);
 
 	}
 

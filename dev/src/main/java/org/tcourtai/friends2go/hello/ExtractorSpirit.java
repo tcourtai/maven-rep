@@ -13,7 +13,6 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class ExtractorSpirit extends Extractor {
-	private String html;
 	private final Company company = Company.SPIRIT;
 	
 	public ExtractorSpirit(FlightInfo fi) {

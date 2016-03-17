@@ -95,6 +95,18 @@ public class FlightInfo {
 	public void setDate(String date) {
 		this.date = date;
 	}
+	
+	public String getDateDay() {
+		return date.substring(8, 10);
+	}
+	
+	public String getDateMonth() {
+		return date.substring(5, 7);
+	}
+	
+	public String getDateYear() {
+		return date.substring(0, 4);
+	}
 
 	public FlightType getFlightType() {
 		return flightType;

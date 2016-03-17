@@ -7,6 +7,7 @@ public class Extractor {
     private final String slash = "%2F";
 	protected Flights flights;
 	protected FlightInfo flightInfo;
+	protected String html;
 	
 	public Extractor(FlightInfo fi) {
 		flights = new Flights();

@@ -126,15 +126,7 @@ public class PriceAnalyzer {
 				lstDepDate.add(formatter.format(DateUtil.addDays(depDateToDate, i)));
 			}
 			}
-			
-			/*
-			if  (retDate != null) {
-			Date retDateToDate = formatter.parse(retDate);
-			lstRetDate.add(formatter.format(retDateToDate));
-			lstRetDate.add(formatter.format(DateUtil.addDays(retDateToDate, 1)));
-			lstRetDate.add(formatter.format(DateUtil.addDays(retDateToDate, -1)));
-			}
-			*/
+
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
