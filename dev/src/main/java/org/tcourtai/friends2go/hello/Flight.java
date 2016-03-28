@@ -113,6 +113,8 @@ public class Flight extends FlightInfo {
 	public float parsePrice(String p) {
 		float fp = Float.MAX_VALUE;
 		p = p.replaceAll("\\$", "");
+		p = p.replaceAll("[,]", "");
+		System.out.println(p);
 		try {
 			fp = Float.parseFloat(p);
 		} catch (Exception ex) {

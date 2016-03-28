@@ -42,7 +42,6 @@ public class ExtractorAmericanAirlines extends Extractor{
 							+ "&flightParams.flightDateParams.travelMonth=" + flightInfo.getDateMonth()
 							+ "&flightParams.flightDateParams.travelYear=" + flightInfo.getDateYear()
 							+ "&flightSearch=revenue&fromSearchPage=true&infantPassengerCount=0&passengerCount=1&returnDate.searchTime=040001&returnDate.travelDay=-1000&returnDate.travelMonth=-1000&rooms=1&searchCategory=false&searchType=fare&seniorPassengerCount=0&serviceclass=coach&tripType=oneWay&un_form_encoding=utf-8&un_jtt_oneWay=true&youngAdultPassengerCount=0";
-			System.out.println(body);
 			
 			response = Unirest.post("https://mobile.aa.com/mt/www.aa.com/reservation/tripSearchSubmit.do")
 					.header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
@@ -121,7 +120,7 @@ public class ExtractorAmericanAirlines extends Extractor{
 			}
 			
 			Element ePrice = flight.select("div.un_fs13").first();
-			Pattern p = Pattern.compile("\\D*([0-9]+[.]?[0-9]+)\\D*");
+			Pattern p = Pattern.compile("\\D*([0-9,]+[.]?[0-9]+)\\D*");
 			Matcher m = p.matcher(ePrice.text());
 			while (m.find()) {
 				f.setPrice(m.group(1));

@@ -3,7 +3,6 @@ package org.tcourtai.friends2go;
 
 import java.util.Arrays;
 
-import org.h2.server.web.WebServlet;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
@@ -31,12 +30,14 @@ public class Application {
         */
     }
     
+    /*
     @Bean
     ServletRegistrationBean h2servletRegistration(){
         ServletRegistrationBean registrationBean = new ServletRegistrationBean( new WebServlet());
         registrationBean.addUrlMappings("/console/*");
         return registrationBean;
     }
+    */
     
 
 

@@ -153,6 +153,7 @@ public class PriceAnalyzer {
 		case "WAS" : 
 			lst.add("IAD");
 			lst.add("DCA");
+			lst.add("BWI");
 			break;
 		case "YMQ" : 
 			lst.add("YUL");
