@@ -1,6 +1,8 @@
 package org.tcourtai.friends2go.hello;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -14,6 +16,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.lang.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,31 +25,61 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.stereotype.Service;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+
 
 public class ExtractorUnited extends Extractor {
 
 	private final String unitedUrl = "https://mobile.united.com";
 	private Map<String, String> mapAirport;
 
+	
+	public ExtractorUnited(){
+		super();
+	};
+
 	public ExtractorUnited(FlightInfo fi) {
 		super(fi);
-		// TODO Auto-generated constructor stub
+		company = Company.UNITED;
 	}
+	
+	/*
+	@PostConstruct
+    public void init() {
+        try {
+
+            Resource resource = resourceLoader.getResource("classpath:UnitedAirports.txt");
+            
+            ArrayList<String> list = FileUtil.readInputStreamByLine(resource.getInputStream());
+    		mapAirport = new HashMap<String, String>();
+    		for (String line : list) {
+    			mapAirport.put(line.split(FileUtil.csvSeparator)[0], line.split(FileUtil.csvSeparator)[1]);
+    		}	
+    		System.out.println("airpot list size" + mapAirport.size());
+
+        } catch (IOException | NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+    */
 
 
 	public void start(){
 		loadAirportList();
+		
 		queryToHtml();
 		parse();
 	};
 
 	public void queryToHtml() {
 		html = "";
-		System.out.println("Searching for ...." + flightInfo.toString());
 		HttpResponse<String> response;
 		try {
 			String fromToHtml = StringEscapeUtils.escapeHtml(resolveCode(flightInfo.getFromCode()));
@@ -55,8 +89,7 @@ public class ExtractorUnited extends Extractor {
 					+ "&NonstopOnly=true&NumberOfAdults=1&SearchBy=P&SearchType=OW&ToCode=" + flightInfo.getToCode() 
 					+ "&From=" + fromToHtml 
 					+ "&To=" + toToHtml;
-			System.out.println(body);
-			
+
 			response = Unirest.post("https://mobile.united.com/Booking/OneWaySearch")
 					.header("accept", "text/html, */*; q=0.01")
 					.header("origin", "https://mobile.united.com")
@@ -78,7 +111,6 @@ public class ExtractorUnited extends Extractor {
 			if (title.text().equalsIgnoreCase("Object moved")) {
 				Element link = doc.select("a[href]").first();
 				String href = unitedUrl + link.attr("href");
-				System.out.println("Object moved, connecting to..." + href);
 				response = Unirest.get(href).asString();
 				html = response.getBody().toString();	
 			}
@@ -87,6 +119,7 @@ public class ExtractorUnited extends Extractor {
 			List<String> lst = new ArrayList<>();
 			lst.add(html);
 
+			/*
 			Path file = Paths.get("C:\\Users\\tcour\\Documents\\united.html");
 			try {
 				Files.write(file, lst, Charset.forName("UTF-8"));
@@ -94,6 +127,7 @@ public class ExtractorUnited extends Extractor {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			 */
 
 		} catch (UnirestException e) {
 			e.printStackTrace();
@@ -129,11 +163,11 @@ public class ExtractorUnited extends Extractor {
 			for (Element e : eDetails) {
 				details = e.html(); 
 				if (details.contains("</span")) {
-						detailsTab = details.split(">");
-						if (detailsTab.length > 4) {
+					detailsTab = details.split(">");
+					if (detailsTab.length > 4) {
 						f.setArrival(detailsTab[1].replaceAll("</span", ""));
 						f.setTo(detailsTab[4]);	
-						}
+					}
 				}
 			}
 
@@ -162,15 +196,15 @@ public class ExtractorUnited extends Extractor {
 	public String resolveCode(String code) {
 		return mapAirport.get(code);
 	}
-	
+
 	public void loadAirportList () {
-		URL url = this.getClass().getClassLoader().getResource("UnitedAirports.txt");
-	    String path = url.toString().substring(6);
-		ArrayList<String> list = FileUtil.readFileByLine(path);
+
+		InputStream input = this.getClass().getClassLoader().getResourceAsStream("UnitedAirports.txt");
+		ArrayList<String> list = FileUtil.readInputStreamByLine(input);
 		mapAirport = new HashMap<String, String>();
 		for (String line : list) {
 			mapAirport.put(line.split(FileUtil.csvSeparator)[0], line.split(FileUtil.csvSeparator)[1]);
-		}			
+		}
 	}
 
 	public void generateAirportList() {
@@ -203,7 +237,7 @@ public class ExtractorUnited extends Extractor {
 		for (UnitedAirport airport : listAirport) {
 			listAirportCSV.add(airport.toCSV());
 		}
-		
+
 		FileUtil.writeCSV(Paths.get("export.csv"), listAirportCSV);
 
 	}

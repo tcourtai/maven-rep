@@ -20,6 +20,7 @@ import java.util.List;
 
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -45,8 +46,13 @@ public class PriceAnalyzer {
     private ArrayList<String> lstDepDate = new ArrayList<String>();
     private ArrayList<String> lstFromCode = new ArrayList<String>();
     private ArrayList<String> lstToCode = new ArrayList<String>();
+    
+   
 
-    public String getFromCode() {
+	public PriceAnalyzer() {
+	}	
+
+	public String getFromCode() {
 		return fromCode;
 	}
 	public void setFromCode(String from) {
@@ -86,18 +92,26 @@ public class PriceAnalyzer {
 		computeAirportCode();
 		generateFlightInfo();
 		for (FlightInfo fi : lstFlightInfo) {
+			System.out.println(fi.toString());
+			
 			ExtractorSpirit eSpirit = new ExtractorSpirit(fi);
-			eSpirit.start();		
+			eSpirit.start();	
+			System.out.println(eSpirit.getResultInfo());
 			lstFlight.add(eSpirit.getFlights().getList());
 
 			ExtractorUnited eUnited = new ExtractorUnited(fi);
 			eUnited.start();		
+			System.out.println(eUnited.getResultInfo());
 			lstFlight.add(eUnited.getFlights().getList());
 			
 			ExtractorAmericanAirlines eAA = new ExtractorAmericanAirlines(fi);
-			eAA.start();		
-			lstFlight.add(eAA.getFlights().getList());		
+			eAA.start();	
+			System.out.println(eAA.getResultInfo());	
+			lstFlight.add(eAA.getFlights().getList());	
 			
+
+	        //flightRepository.save(lstFlight.getList());
+			//lstFlight.getList().clear();
 		}
 		System.out.println("finished");	
 		//System.out.println(lstFlight.getList().toString());

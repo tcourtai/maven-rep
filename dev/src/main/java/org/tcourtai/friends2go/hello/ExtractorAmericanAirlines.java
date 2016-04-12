@@ -22,8 +22,9 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class ExtractorAmericanAirlines extends Extractor{
 	
-	public ExtractorAmericanAirlines(FlightInfo fi) {
+	public ExtractorAmericanAirlines(FlightInfo fi) {		
 		super(fi);
+		company = Company.AmericanAirlines;
 	}
 	
 	public void start() {
@@ -82,7 +83,6 @@ public class ExtractorAmericanAirlines extends Extractor{
 		Document doc = Jsoup.parse(html);
 
 		Elements lstflights = doc.select("[class~=^lmb[0-9]*bl$]");
-		System.out.println("nb flights "+ lstflights.size());
 
 		for (Element flight : lstflights){
 			Flight f = new Flight(flightInfo);

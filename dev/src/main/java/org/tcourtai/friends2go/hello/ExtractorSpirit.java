@@ -13,10 +13,10 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class ExtractorSpirit extends Extractor {
-	private final Company company = Company.SPIRIT;
 	
 	public ExtractorSpirit(FlightInfo fi) {
 		super(fi);
+		company = Company.SPIRIT;
 	}
 	
 	public void start(){
@@ -26,7 +26,6 @@ public class ExtractorSpirit extends Extractor {
 	
 	public void queryToHtml() {
 		html = "";
-		System.out.println("Searching for ...." + flightInfo.toString());
 		HttpResponse<String> response;
 		try {
 			response = Unirest.post("https://www.spirit.com/Default.aspx?action=search")

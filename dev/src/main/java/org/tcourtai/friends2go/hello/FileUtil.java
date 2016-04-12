@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class FileUtil {
 
 	static final String csvSeparator = ";";
@@ -41,6 +42,23 @@ public class FileUtil {
 			}
 			s.close();
 		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	static ArrayList<String> readInputStreamByLine(java.io.InputStream inputStream) {
+		Scanner s;
+		ArrayList<String> list = new ArrayList<String>();
+		try {
+			s = new Scanner(inputStream);
+
+			while (s.hasNextLine()) {
+				list.add(s.nextLine());
+			}
+			s.close();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

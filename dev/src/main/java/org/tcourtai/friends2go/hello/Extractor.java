@@ -8,14 +8,28 @@ public class Extractor {
 	protected Flights flights;
 	protected FlightInfo flightInfo;
 	protected String html;
+	public Company company;
 	
 	public Extractor(FlightInfo fi) {
 		flights = new Flights();
 		this.flightInfo = fi;
 	}
 	
+	public Extractor() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Flights getFlights() {
 		return flights;
+	}
+	
+	public int getNumberOfFlights()
+	{
+		return flights.list.size();
+	}
+	
+	public String getResultInfo(){
+		return company.toString() + " : " + getNumberOfFlights() + " flight";
 	}
 	
 	public String getDateToHtml(String d) {

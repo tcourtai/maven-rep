@@ -125,12 +125,10 @@ public class FlightInfo {
 	}
 
 	public String toString() {
-		return "############ Flight info ###############"
-				+ " \nFrom : " + this.xfrom
-				+ " \nTo : " + this.xto
-				+ " \nFrom(Code) : " + this.fromCode
-				+ " \nTo(Code) : " + this.toCode
-				+ " \nDate : " + this.date;
+		return "SEARCH # "
+				+ this.fromCode
+				+ " / " + this.toCode
+				+ " / " + this.date;
 	}
 	
 }

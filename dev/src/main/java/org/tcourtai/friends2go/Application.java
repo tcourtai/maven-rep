@@ -5,9 +5,10 @@ import java.util.Arrays;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.embedded.ServletRegistrationBean;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.tcourtai.friends2go.hello.Extractor;
+import org.tcourtai.friends2go.hello.ExtractorUnited;
+import org.tcourtai.friends2go.hello.FlightInfo;
 
 
 //@Configuration
@@ -17,7 +18,7 @@ import org.springframework.context.annotation.Bean;
 public class Application {
 
     public static void main(String[] args) {
-    	ApplicationContext ctx =  SpringApplication.run(Application.class, args);
+    	SpringApplication.run(Application.class, args);
     	
     	/*
         System.out.println("Let's inspect the beans provided by Spring Boot:");
@@ -39,7 +40,12 @@ public class Application {
     }
     */
     
-
-
-   
+    private FlightInfo fi;
+    
+    @Bean
+    public ExtractorUnited extractorUnited()
+    {
+       return new ExtractorUnited(fi);
+    }
+  
 }
